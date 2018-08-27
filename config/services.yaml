@@ -5,6 +5,15 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    tokenkey: 'w0rkappT0k3nK3y'
+    fbAppId: '242197353098849'
+    fbSecretKey: '8f55ea3921529e3084f1aaf7aee93721'
+    #googleAppId: '671044463266-g4r115kl5fg1jokunvm1c51629qjnf68.apps.googleusercontent.com'
+    #googleSecretKey: 'L3YFIasy-t3Kqv3qJc6amTZP'
+
+    googleClientSecret: 'NUrEU_PdNsRuWqMD51mhiWqF'
+    googleClientId: '1087628520029-ppa64srr3eaa6e7i6lokqh8h7mkarv5m.apps.googleusercontent.com'
+    googleApiKey: 'AIzaSyDifAGjtI9wiLafIySeppjNFCPgwAd92J4'
 
 services:
     # default configuration for services in *this* file

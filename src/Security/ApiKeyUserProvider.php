@@ -2,32 +2,45 @@
 // src/Security/ApiKeyUserProvider.php
 namespace App\Security;
 
+use App\Entity\User;
+use Firebase\JWT\JWT;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\User;
+//use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
+    private $params ;
+    private $em;
+
+    public function __construct(ParameterBagInterface $params, EntityManagerInterface $em)
+    {
+        $this->params = $params;
+        $this->em = $em;
+    }
+
     public function getUsernameForApiKey($apiKey)
     {
+        //var_dump($this->params->get('tokenkey'));exit;
+        $tokenDecoded = array('token' => JWT::decode ($apiKey,$this->params->get('tokenkey'), array('HS256') ) );
+        //($newToken, $this->getParameter('tokenkey')));
         // Look up the username based on the token in the database, via
         // an API call, or do something entirely different
-        $username = 'Gonzalo';
+        $username = $tokenDecoded['token']->name;
 
         return $username;
     }
 
     public function loadUserByUsername($username)
     {
+        $userRepository = $this->em->getRepository(User::class);
+        $user =  $userRepository->loadUserByUsername($username);
 
-        return new User(
-            $username,
-            null,
-            // the roles for the user - you may choose to determine
-            // these dynamically somehow based on the user
-            array('ROLE_API')
-        );
+        return $user;
     }
 
     public function refreshUser(UserInterface $user)
